@@ -55,11 +55,11 @@ class TestWarehouse(TestStockCommon):
         self.assertEqual(self.env['stock.quant']._gather(self.product_1, self.warehouse_1.wh_input_stock_loc_id).quantity, 0.0)
         self.assertEqual(self.env['stock.quant']._gather(self.product_1, self.env.ref('stock.stock_location_stock')).quantity, 0.0)
 
-    def test_inventory_wizard_as_manager(self):
-        """ Using the "Update Quantity" wizard as stock manager.
+    def test_inventory_wizard_as_user(self):
+        """ Using the "Update Quantity" wizard as stock user.
         """
         self.product_1.type = 'product'
-        InventoryWizard = self.env['stock.change.product.qty'].with_user(self.user_stock_manager)
+        InventoryWizard = self.env['stock.change.product.qty'].with_user(self.user_stock_user)
         inventory_wizard = InventoryWizard.create({
             'product_id': self.product_1.id,
             'product_tmpl_id': self.product_1.product_tmpl_id.id,
@@ -73,20 +73,6 @@ class TestWarehouse(TestStockCommon):
         # Check associated quants: 2 quants for the product and the quantity (1 in stock, 1 in inventory adjustment)
         quant = self.env['stock.quant'].search([('id', 'not in', self.existing_quants.ids)])
         self.assertEqual(len(quant), 2)
-
-    def test_inventory_wizard_as_user(self):
-        """ Using the "Update Quantity" wizard as stock user.
-        """
-        self.product_1.type = 'product'
-        InventoryWizard = self.env['stock.change.product.qty'].with_user(self.user_stock_user)
-        inventory_wizard = InventoryWizard.create({
-            'product_id': self.product_1.id,
-            'product_tmpl_id': self.product_1.product_tmpl_id.id,
-            'new_quantity': 50.0,
-        })
-        # User has no right on quant, must raise an AccessError
-        with self.assertRaises(UserError):
-            inventory_wizard.change_product_qty()
 
     def test_basic_move(self):
         product = self.product_3.with_user(self.user_stock_manager)
