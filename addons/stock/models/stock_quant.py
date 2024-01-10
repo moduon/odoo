@@ -756,8 +756,6 @@ class StockQuant(models.Model):
 
     def _apply_inventory(self):
         move_vals = []
-        if not self.user_has_groups('stock.group_stock_manager'):
-            raise UserError(_('Only a stock manager can validate an inventory adjustment.'))
         for quant in self:
             # Create and validate a move so that the quant matches its `inventory_quantity`.
             if float_compare(quant.inventory_diff_quantity, 0, precision_rounding=quant.product_uom_id.rounding) > 0:
