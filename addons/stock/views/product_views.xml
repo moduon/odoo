@@ -217,7 +217,6 @@
             <field name="arch" type="xml">
                 <header position="inside">
                     <button string="Update Quantity" type="object"
-                        groups="stock.group_stock_manager"
                         name="action_update_quantity_on_hand"
                         attrs="{'invisible': [('type', '!=', 'product')]}"/>
                     <button string="Replenish" type="action"
@@ -245,7 +244,6 @@
                 <data>
                     <header position="inside">
                         <button string="Update Quantity" type="object"
-                            groups="stock.group_stock_manager"
                             name="action_update_quantity_on_hand"
                             attrs="{'invisible': [('type', '!=', 'product')]}"/>
                         <button string="Replenish" type="action"
@@ -353,7 +351,6 @@
                 <data>
                     <header position="inside" >
                         <button string="Update Quantity" type="object"
-                            groups="stock.group_stock_manager"
                             name="action_update_quantity_on_hand"
                             attrs="{'invisible': [('type', '!=', 'product')]}"/>
                         <button string="Replenish" type="action"
