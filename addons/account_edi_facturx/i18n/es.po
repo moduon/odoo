@@ -142,11 +142,6 @@ msgid "factur-x.xml"
 msgstr "factur-x.xml"
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_line_facturx_export
-msgid "false"
-msgstr "False"
-
-#. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
 msgid "fx"
 msgstr "fx"
