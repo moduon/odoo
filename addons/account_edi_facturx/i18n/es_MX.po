@@ -23,45 +23,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "1.0"
-msgstr "1.0"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-msgid "42"
-msgstr "42"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "ConformanceLevel"
-msgstr "Nivel de conformidad"
-
-#. module: account_edi_facturx
 #: code:addons/account_edi_facturx/models/account_edi_format.py:0
 #, python-format
 msgid "Display the currency"
 msgstr "Mostrar la divisa"
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "DocumentFileName"
-msgstr "Nombre del archivo de documento"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "DocumentType"
-msgstr "Tipo de documento"
-
-#. module: account_edi_facturx
 #: model:ir.model,name:account_edi_facturx.model_account_edi_format
 msgid "EDI format"
 msgstr "Formato EDI"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "EN 16931"
-msgstr "EN 16931"
 
 #. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
@@ -96,11 +66,6 @@ msgstr "Impuesto"
 
 #. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "Text"
-msgstr "Texto"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
 msgid "The actual version of the Factur-X XML schema"
 msgstr "La versión actual del Schema de Factur-X XML"
 
@@ -120,42 +85,6 @@ msgstr ""
 "Actívela antes de volver a importar."
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_line_facturx_export
-msgid "VAT"
-msgstr "NIF"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "Version"
-msgstr "Versión"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "external"
-msgstr "externo"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "factur-x.xml"
-msgstr "factur-x.xml"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "fx"
-msgstr "fx"
-
-#. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
 msgid "name of the embedded XML invoice file"
 msgstr "nombre del archivo de factura XML insertado"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-msgid "urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"
-msgstr "urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
-msgstr "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
