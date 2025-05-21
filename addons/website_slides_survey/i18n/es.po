@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_slides_survey
-# 
+#
 # Translators:
 # Martin Trigaux, 2021
 # José Cabrera Lozano <jose.cabrera@edukative.es>, 2021
 # marcescu, 2022
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
@@ -140,7 +140,7 @@ msgstr "<span class=\"text-muted\">Completado</span>"
 #: model_terms:ir.ui.view,arch_db:website_slides_survey.course_main
 msgid "<span>Start Now</span><i class=\"fa fa-chevron-right ml-2 align-middle\"/>"
 msgstr ""
-"<span>Comemzar ahora</span><i class=\"fa fa-chevron-right ml-2 align-"
+"<span>Comenzar ahora</span><i class=\"fa fa-chevron-right ml-2 align-"
 "middle\"/>"
 
 #. module: website_slides_survey
