@@ -59,7 +59,7 @@
                         <t t-foreach="tax_details['invoice_line_tax_details'][line]['tax_details'].values()"
                            t-as="tax_detail_vals">
                             <ram:ApplicableTradeTax t-if="tax_detail_vals['amount_type'] == 'percent'">
-                                <ram:TypeCode>VAT</ram:TypeCode>
+                                <ram:TypeCode t-translation="off">VAT</ram:TypeCode>
                                 <ram:CategoryCode t-esc="tax_detail_vals['unece_tax_category_code']"/>
                                 <ram:RateApplicablePercent t-esc="tax_detail_vals['amount']"/>
                             </ram:ApplicableTradeTax>
@@ -119,7 +119,7 @@
                 -->
                 <rsm:ExchangedDocumentContext>
                     <ram:GuidelineSpecifiedDocumentContextParameter>
-                        <ram:ID>urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended</ram:ID>
+                        <ram:ID t-translation="off">urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended</ram:ID>
                     </ram:GuidelineSpecifiedDocumentContextParameter>
                 </rsm:ExchangedDocumentContext>
 
@@ -199,7 +199,7 @@
 
                         <!-- Bank account. -->
                         <ram:SpecifiedTradeSettlementPaymentMeans t-if="record.partner_bank_id.acc_type == 'iban'">
-                        <ram:TypeCode>42</ram:TypeCode>
+                        <ram:TypeCode t-translation="off">42</ram:TypeCode>
                             <ram:PayeePartyCreditorFinancialAccount>
                                 <ram:IBANID t-esc="record.partner_bank_id.sanitized_acc_number"/>
                             </ram:PayeePartyCreditorFinancialAccount>
@@ -210,7 +210,7 @@
                             <ram:ApplicableTradeTax>
                                 <ram:CalculatedAmount
                                     t-esc="format_monetary(balance_multiplicator * tax_detail_vals['tax_amount_currency'], record.currency_id)"/>
-                                <ram:TypeCode>VAT</ram:TypeCode>
+                                <ram:TypeCode t-translation="off">VAT</ram:TypeCode>
                                 <ram:ExemptionReason t-if="tax_detail_vals['unece_tax_category_code'] == 'E'" t-esc="tax_detail_vals['exemption_reason']"/>
                                 <ram:ExemptionReason t-if="tax_detail_vals['unece_tax_category_code'] == 'G'" t-esc="'Export outside the EU'"/>
                                 <ram:ExemptionReason t-if="tax_detail_vals['unece_tax_category_code'] == 'K'" t-esc="'Intra-community supply'"/>
@@ -297,32 +297,32 @@
                             <rdf:Bag>
                                 <rdf:li rdf:parseType="Resource">
                                     <pdfaSchema:schema>Factur-X PDFA Extension Schema</pdfaSchema:schema>
-                                    <pdfaSchema:namespaceURI>urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#</pdfaSchema:namespaceURI>
-                                    <pdfaSchema:prefix>fx</pdfaSchema:prefix>
+                                    <pdfaSchema:namespaceURI t-translation="off">urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#</pdfaSchema:namespaceURI>
+                                    <pdfaSchema:prefix t-translation="off">fx</pdfaSchema:prefix>
                                     <pdfaSchema:property>
                                         <rdf:Seq>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>DocumentFileName</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
+                                                <pdfaProperty:name t-translation="off">DocumentFileName</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
                                                 <pdfaProperty:description>name of the embedded XML invoice file</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>DocumentType</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
+                                                <pdfaProperty:name t-translation="off">DocumentType</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
                                                 <pdfaProperty:description>INVOICE</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>Version</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
+                                                <pdfaProperty:name t-translation="off">Version</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
                                                 <pdfaProperty:description>The actual version of the Factur-X XML schema</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>ConformanceLevel</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
+                                                <pdfaProperty:name t-translation="off">ConformanceLevel</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
                                                 <pdfaProperty:description>The conformance level of the embedded Factur-X data</pdfaProperty:description>
                                             </rdf:li>
                                         </rdf:Seq>
@@ -332,10 +332,10 @@
                         </pdfaExtension:schemas>
                     </rdf:Description>
                     <rdf:Description xmlns:fx="urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#" rdf:about="">
-                        <fx:ConformanceLevel>EN 16931</fx:ConformanceLevel>
-                        <fx:DocumentFileName>factur-x.xml</fx:DocumentFileName>
-                        <fx:DocumentType>INVOICE</fx:DocumentType>
-                        <fx:Version>1.0</fx:Version>
+                        <fx:ConformanceLevel t-translation="off">EN 16931</fx:ConformanceLevel>
+                        <fx:DocumentFileName t-translation="off">factur-x.xml</fx:DocumentFileName>
+                        <fx:DocumentType t-translation="off">INVOICE</fx:DocumentType>
+                        <fx:Version t-translation="off">1.0</fx:Version>
                     </rdf:Description>
                 </rdf:RDF>
             </x:xmpmeta>

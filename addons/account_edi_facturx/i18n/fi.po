@@ -24,45 +24,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "1.0"
-msgstr "1.0"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-msgid "42"
-msgstr "42"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "ConformanceLevel"
-msgstr ""
-
-#. module: account_edi_facturx
 #: code:addons/account_edi_facturx/models/account_edi_format.py:0
 #, python-format
 msgid "Display the currency"
 msgstr "Näytä valuutta"
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "DocumentFileName"
-msgstr ""
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "DocumentType"
-msgstr ""
-
-#. module: account_edi_facturx
 #: model:ir.model,name:account_edi_facturx.model_account_edi_format
 msgid "EDI format"
 msgstr "EDI-muoto"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "EN 16931"
-msgstr "EN 16931"
 
 #. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
@@ -97,11 +67,6 @@ msgstr "Vero"
 
 #. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "Text"
-msgstr "Teksti"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
 msgid "The actual version of the Factur-X XML schema"
 msgstr ""
 
@@ -119,42 +84,6 @@ msgid ""
 msgstr ""
 
 #. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_line_facturx_export
-msgid "VAT"
-msgstr "ALV"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "Version"
-msgstr "Versio"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "external"
-msgstr ""
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "factur-x.xml"
-msgstr "factur-x.xml"
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "fx"
-msgstr "fx"
-
-#. module: account_edi_facturx
 #: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
 msgid "name of the embedded XML invoice file"
 msgstr ""
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_facturx_export
-msgid "urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"
-msgstr ""
-
-#. module: account_edi_facturx
-#: model_terms:ir.ui.view,arch_db:account_edi_facturx.account_invoice_pdfa_3_facturx_metadata
-msgid "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
-msgstr "urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"
