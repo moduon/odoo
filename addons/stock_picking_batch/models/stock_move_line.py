@@ -141,30 +141,95 @@ class StockMoveLine(models.Model):
         if remaining_lines:
             remaining_lines._auto_wave_lines_into_new_waves(nearest_parent_locations=lines_nearest_parent_locations)
 
+    # Existing waves
+    def _auto_wave_domain_existing_wave(self):
+        """Check if line can be added to a wave"""
+        # All lines must have the same picking type
+        picking_type = self.picking_type_id
+        domain = [
+            ('picking_type_id', '=', picking_type.id),
+            ('company_id', 'in', self.mapped('company_id').ids),
+            ('is_wave', '=', True)
+        ]
+        if picking_type.batch_auto_confirm:
+            domain = expression.AND([domain, [('state', 'not in', ['done', 'cancel'])]])
+        else:
+            domain = expression.AND([domain, [('state', '=', 'draft')]])
+        if picking_type.batch_group_by_partner:
+            domain = expression.AND([domain, [('picking_ids.partner_id', 'in', self.move_id.partner_id.ids)]])
+        if picking_type.batch_group_by_destination:
+            domain = expression.AND([domain, [('picking_ids.partner_id.country_id', 'in', self.move_id.partner_id.country_id.ids)]])
+        if picking_type.batch_group_by_src_loc:
+            domain = expression.AND([domain, [('picking_ids.location_id', 'in', self.location_id.ids)]])
+        if picking_type.batch_group_by_dest_loc:
+            domain = expression.AND([domain, [('picking_ids.location_dest_id', 'in', self.location_dest_id.ids)]])
+        return domain
+
+    def _is_potential_existing_wave(self, wave):
+        """Check if line can be added to a wave"""
+        self.ensure_one()
+        picking_type = self.picking_type_id
+        if self.company_id != wave.company_id \
+        or (picking_type.batch_group_by_partner and self.move_id.partner_id != wave.picking_ids.partner_id) \
+        or (picking_type.batch_group_by_destination and self.move_id.partner_id.country_id != wave.picking_ids.partner_id.country_id) \
+        or (picking_type.batch_group_by_src_loc and self.location_id != wave.picking_ids.location_id) \
+        or (picking_type.batch_group_by_dest_loc and self.location_dest_id != wave.picking_ids.location_dest_id) \
+        or (picking_type.wave_group_by_product and self.product_id != wave.move_line_ids.product_id) \
+        or (picking_type.wave_group_by_category and self.product_id.categ_id != wave.move_line_ids.product_id.categ_id):
+            return True
+        return False
+
+    # New waves
+    def _auto_wave_domain_new_wave(self):
+        # All lines must have the same picking type
+        picking_type = self.picking_type_id
+        domain = [
+            ('id', 'in', self.ids),
+            ('company_id', 'in', self.company_id.ids),
+            ('picking_id.state', '=', 'assigned'),
+            ('picking_type_id', '=', picking_type.id),
+            '|',
+            ('batch_id', '=', False),
+            ('batch_id.is_wave', '=', False)
+        ]
+        if picking_type.batch_group_by_partner:
+            domain = expression.AND([domain, [('move_id.partner_id', 'in', self.move_id.partner_id.ids)]])
+        if picking_type.batch_group_by_destination:
+            domain = expression.AND([domain, [('move_id.partner_id.country_id', 'in', self.move_id.partner_id.country_id.ids)]])
+        if picking_type.batch_group_by_src_loc:
+            domain = expression.AND([domain, [('location_id', 'in', self.location_id.ids)]])
+        if picking_type.batch_group_by_dest_loc:
+            domain = expression.AND([domain, [('location_dest_id', 'in', self.location_dest_id.ids)]])
+        if picking_type.wave_group_by_product:
+            domain = expression.AND([domain, [('product_id', 'in', self.product_id.ids)]])
+        if picking_type.wave_group_by_category:
+            domain = expression.AND([domain, [('product_id.categ_id', 'in', self.product_id.categ_id.ids)]])
+        if picking_type.wave_group_by_location:
+            domain = expression.AND([domain, [('location_id', 'child_of', picking_type.wave_location_ids.ids)]])
+        return domain
+
+    def _is_potential_new_wave(self, potential_line):
+        """Check if line can be added to a wave"""
+        self.ensure_one()
+        picking_type = self.picking_type_id
+        if self.id == potential_line.id \
+        or self.company_id != potential_line.company_id \
+        or (picking_type.batch_group_by_partner and self.move_id.partner_id != potential_line.move_id.partner_id) \
+        or (picking_type.batch_group_by_destination and self.move_id.partner_id.country_id != potential_line.move_id.partner_id.country_id) \
+        or (picking_type.batch_group_by_src_loc and self.location_id != potential_line.location_id) \
+        or (picking_type.batch_group_by_dest_loc and self.location_dest_id != potential_line.location_dest_id) \
+        or (picking_type.wave_group_by_product and self.product_id != potential_line.product_id) \
+        or (picking_type.wave_group_by_category and self.product_id.categ_id != potential_line.product_id.categ_id):
+            return True
+        return False
+
     def _auto_wave_lines_into_existing_waves(self, nearest_parent_locations=False):
         """ Try to add move lines to existing waves if possible, return move lines of which no appropriate waves were found to link to
          :param nearest_parent_locations (defaultdict): the key is the move line and the value is the nearest parent location in the wave locations list"""
         remaining_lines = OrderedSet()
         for (picking_type, lines) in self.grouped(lambda l: l.picking_type_id).items():
             if lines:
-                domain = [
-                    ('picking_type_id', '=', picking_type.id),
-                    ('company_id', 'in', lines.mapped('company_id').ids),
-                    ('is_wave', '=', True)
-                ]
-                if picking_type.batch_auto_confirm:
-                    domain = expression.AND([domain, [('state', 'not in', ['done', 'cancel'])]])
-                else:
-                    domain = expression.AND([domain, [('state', '=', 'draft')]])
-                if picking_type.batch_group_by_partner:
-                    domain = expression.AND([domain, [('picking_ids.partner_id', 'in', lines.move_id.partner_id.ids)]])
-                if picking_type.batch_group_by_destination:
-                    domain = expression.AND([domain, [('picking_ids.partner_id.country_id', 'in', lines.move_id.partner_id.country_id.ids)]])
-                if picking_type.batch_group_by_src_loc:
-                    domain = expression.AND([domain, [('picking_ids.location_id', 'in', lines.location_id.ids)]])
-                if picking_type.batch_group_by_dest_loc:
-                    domain = expression.AND([domain, [('picking_ids.location_dest_id', 'in', lines.location_dest_id.ids)]])
-
+                domain = lines._auto_wave_domain_existing_wave()
                 potential_waves = self.env['stock.picking.batch'].search(domain)
                 wave_to_new_lines = defaultdict(set)
 
@@ -190,14 +255,9 @@ class StockMoveLine(models.Model):
                 for line in lines:
                     wave_found = False
                     for wave in potential_waves:
-                        if line.company_id != wave.company_id \
-                        or (picking_type.batch_group_by_partner and line.move_id.partner_id != wave.picking_ids.partner_id) \
-                        or (picking_type.batch_group_by_destination and line.move_id.partner_id.country_id != wave.picking_ids.partner_id.country_id) \
-                        or (picking_type.batch_group_by_src_loc and line.location_id != wave.picking_ids.location_id) \
-                        or (picking_type.batch_group_by_dest_loc and line.location_dest_id != wave.picking_ids.location_dest_id) \
-                        or (picking_type.wave_group_by_product and line.product_id != wave.move_line_ids.product_id) \
-                        or (picking_type.wave_group_by_category and line.product_id.categ_id != wave.move_line_ids.product_id.categ_id) \
-                        or (picking_type.wave_group_by_location and waves_nearest_parent_locations[wave] != nearest_parent_locations[line].id):
+                        if line._is_potential_existing_wave(wave):
+                            continue
+                        if picking_type.wave_group_by_location and waves_nearest_parent_locations[wave] != nearest_parent_locations[line].id:
                             continue
 
                         wave_new_move_ids = wave_to_new_moves[wave]
@@ -232,33 +292,11 @@ class StockMoveLine(models.Model):
 
     def _auto_wave_lines_into_new_waves(self, nearest_parent_locations=False):
         """ Create new waves for the move lines that could not be added to existing waves. """
-        picking_types = self.picking_type_id
-        for picking_type in picking_types:
-            lines = self.filtered(lambda l: l.picking_type_id == picking_type)
-            domain = [
-                ('id', 'in', lines.ids),
-                ('company_id', 'in', self.company_id.ids),
-                ('picking_id.state', '=', 'assigned'),
-                ('picking_type_id', '=', picking_type.id),
-                '|',
-                ('batch_id', '=', False),
-                ('batch_id.is_wave', '=', False)
-            ]
-            if picking_type.batch_group_by_partner:
-                domain = expression.AND([domain, [('move_id.partner_id', 'in', lines.move_id.partner_id.ids)]])
-            if picking_type.batch_group_by_destination:
-                domain = expression.AND([domain, [('move_id.partner_id.country_id', 'in', lines.move_id.partner_id.country_id.ids)]])
-            if picking_type.batch_group_by_src_loc:
-                domain = expression.AND([domain, [('location_id', 'in', lines.location_id.ids)]])
-            if picking_type.batch_group_by_dest_loc:
-                domain = expression.AND([domain, [('location_dest_id', 'in', lines.location_dest_id.ids)]])
-            if picking_type.wave_group_by_product:
-                domain = expression.AND([domain, [('product_id', 'in', lines.product_id.ids)]])
-            if picking_type.wave_group_by_category:
-                domain = expression.AND([domain, [('product_id.categ_id', 'in', lines.product_id.categ_id.ids)]])
-            if picking_type.wave_group_by_location:
-                domain = expression.AND([domain, [('location_id', 'child_of', picking_type.wave_location_ids.ids)]])
-
+        # picking_types = self.picking_type_id
+        for (picking_type, lines) in self.grouped(lambda l: l.picking_type_id).items():
+            if not lines:
+                continue
+            domain = lines._auto_wave_domain_new_wave()
             potential_lines = self.env['stock.move.line'].search(domain)
             lines_nearest_parent_locations = defaultdict(int)
             if picking_type.wave_group_by_location:
@@ -276,15 +314,9 @@ class StockMoveLine(models.Model):
                 if line.id in matched_lines:
                     continue
                 for potential_line in potential_lines:
-                    if line.id == potential_line.id \
-                    or line.company_id != potential_line.company_id \
-                    or (picking_type.batch_group_by_partner and line.move_id.partner_id != potential_line.move_id.partner_id) \
-                    or (picking_type.batch_group_by_destination and line.move_id.partner_id.country_id != potential_line.move_id.partner_id.country_id) \
-                    or (picking_type.batch_group_by_src_loc and line.location_id != potential_line.location_id) \
-                    or (picking_type.batch_group_by_dest_loc and line.location_dest_id != potential_line.location_dest_id) \
-                    or (picking_type.wave_group_by_product and line.product_id != potential_line.product_id) \
-                    or (picking_type.wave_group_by_category and line.product_id.categ_id != potential_line.product_id.categ_id) \
-                    or (picking_type.wave_group_by_location and lines_nearest_parent_locations[potential_line] != nearest_parent_locations[line].id):
+                    if line._is_potential_new_wave(potential_line):
+                        continue
+                    if picking_type.wave_group_by_location and lines_nearest_parent_locations[potential_line] != nearest_parent_locations[line].id:
                         continue
 
                     line_to_lines[line].add(potential_line.id)
