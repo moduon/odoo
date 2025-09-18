@@ -23,6 +23,7 @@ class StockPickingType(models.Model):
     wave_group_by_category = fields.Boolean('Product Category', help="Split transfers by product category, then group transfers that have the same product category.")
     wave_category_ids = fields.Many2many('product.category', string='Wave Product Categories', help="Categories to consider when grouping waves.")
     wave_group_by_location = fields.Boolean('Location', help="Split transfers by defined locations, then group transfers with the same location.")
+    wave_group_by_uom_category = fields.Boolean('Group by UoM Category', help="Split transfers by UoM Category, then group transfers that have the same UoM Category.")
     wave_location_ids = fields.Many2many('stock.location', string='Wave Locations', help="Locations to consider when grouping waves.", domain="[('usage', '=', 'internal')]")
     batch_max_lines = fields.Integer("Maximum lines",
                                      help="A transfer will not be automatically added to batches that will exceed this number of lines if the transfer is added to it.\n"
@@ -67,7 +68,7 @@ class StockPickingType(models.Model):
 
     @api.model
     def _get_wave_group_by_keys(self):
-        return ['wave_group_by_product', 'wave_group_by_category', 'wave_group_by_location']
+        return ['wave_group_by_product', 'wave_group_by_category', 'wave_group_by_location', 'wave_group_by_uom_category']
 
     @api.model
     def _get_batch_and_wave_group_by_keys(self):

@@ -197,6 +197,7 @@ class StockMoveLine(models.Model):
                         or (picking_type.batch_group_by_dest_loc and line.location_dest_id != wave.picking_ids.location_dest_id) \
                         or (picking_type.wave_group_by_product and line.product_id != wave.move_line_ids.product_id) \
                         or (picking_type.wave_group_by_category and line.product_id.categ_id != wave.move_line_ids.product_id.categ_id) \
+                        or (picking_type.wave_group_by_uom_category and line.product_uom_category_id != wave.move_line_ids.product_uom_category_id) \
                         or (picking_type.wave_group_by_location and waves_nearest_parent_locations[wave] != nearest_parent_locations[line].id):
                             continue
 
@@ -256,6 +257,8 @@ class StockMoveLine(models.Model):
                 domain = expression.AND([domain, [('product_id', 'in', lines.product_id.ids)]])
             if picking_type.wave_group_by_category:
                 domain = expression.AND([domain, [('product_id.categ_id', 'in', lines.product_id.categ_id.ids)]])
+            if picking_type.wave_group_by_uom_category:
+                domain = expression.AND([domain, [('product_uom_category_id', 'in', lines.product_uom_category_id.ids)]])
             if picking_type.wave_group_by_location:
                 domain = expression.AND([domain, [('location_id', 'child_of', picking_type.wave_location_ids.ids)]])
 
@@ -284,6 +287,7 @@ class StockMoveLine(models.Model):
                     or (picking_type.batch_group_by_dest_loc and line.location_dest_id != potential_line.location_dest_id) \
                     or (picking_type.wave_group_by_product and line.product_id != potential_line.product_id) \
                     or (picking_type.wave_group_by_category and line.product_id.categ_id != potential_line.product_id.categ_id) \
+                    or (picking_type.wave_group_by_uom_category and line.product_uom_category_id != potential_line.product_uom_category_id) \
                     or (picking_type.wave_group_by_location and lines_nearest_parent_locations[potential_line] != nearest_parent_locations[line].id):
                         continue
 

@@ -47,6 +47,11 @@
                                 <field name="wave_category_ids" widget="many2many_tags" placeholder="Select product categories you want to group"
                                     invisible="not wave_group_by_category" required="wave_group_by_category"/>
                             </div>
+                            <span invisible="not auto_batch"/>
+                            <div name="wave_uom_category" class="o_row" invisible="not auto_batch">
+                                <field name="wave_group_by_uom_category"/>
+                                <label for="wave_group_by_uom_category"/>
+                            </div>
                             <span invisible="not auto_batch" groups="stock.group_stock_multi_locations"/>
                             <div name="wave_location" class="o_row" invisible="not auto_batch" groups="stock.group_stock_multi_locations">
                                 <field name="wave_group_by_location"/>
