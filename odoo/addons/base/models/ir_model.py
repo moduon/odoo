@@ -2248,6 +2248,11 @@ class IrModelData(models.Model):
         """Low level xmlid lookup
         Return (res_model, res_id) or raise ValueError if not found
         """
+        # HACK: Avoid crashing when queue_job isn't there (MT-12578)
+        if xmlid == "l10n_es_aeat_sii_oca.invoice_validate_sii":
+            from collections import namedtuple
+            Record = namedtuple("Fake", ["id"])
+            return Record(0)
         module, name = xmlid.split('.', 1)
         query = "SELECT model, res_id FROM ir_model_data WHERE module=%s AND name=%s"
         self.env.cr.execute(query, [module, name])
