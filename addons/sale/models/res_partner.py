@@ -93,6 +93,8 @@ class ResPartner(models.Model):
             ]),
             ('order_line', 'any', [('untaxed_amount_to_invoice', '>', 0)]),
             ('state', '=', 'sale'),
+            # Avoid wrongly computed old untaxed_amount_to_invoice
+            ("invoice_status", "!=", "invoiced"),
         ])
         for (partner, currency), orders in sale_orders.grouped(
             lambda so: (so.partner_invoice_id, so.currency_id),
