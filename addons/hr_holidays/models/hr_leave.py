@@ -1037,10 +1037,16 @@ class HrLeave(models.Model):
 
                         if weekend_dates:
                             if start_date == end_date:
-                                # Count only the hours within the calendar working range
-                                day_hours = min(day_end, leave.request_hour_to) - max(day_start, leave.request_hour_from)
-                                hours += max(0, day_hours)
-                                days += day_hours / calendar.hours_per_day
+                                if leave.work_entry_type_request_unit == 'half_day':
+                                    # Half days have no hours, only periods
+                                    is_half_day = leave.request_date_from_period == leave.request_date_to_period
+                                    hours += (day_end - day_start) / (2 if is_half_day else 1)
+                                    days += 0.5 if is_half_day else 1
+                                else:
+                                    # Count only the hours within the calendar working range
+                                    day_hours = min(day_end, leave.request_hour_to) - max(day_start, leave.request_hour_from)
+                                    hours += max(0, day_hours)
+                                    days += day_hours / calendar.hours_per_day
                                 weekend_dates.remove(start_date)
                             else:
                                 if start_date in weekend_dates:

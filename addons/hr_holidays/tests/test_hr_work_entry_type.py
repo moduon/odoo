@@ -264,6 +264,30 @@ class TestHrWorkEntryType(TestHrHolidaysCommon):
         })
         self.assertEqual(leave._get_durations()[leave.id], (0.5, 4))
 
+    def test_calendar_duration_half_day_on_weekend(self):
+        """A half day of a 'calendar days' type counts on a non working day"""
+        half_day_type = self.env['hr.work.entry.type'].create({
+            'name': 'Test Time Off (Half Day Calendar)',
+            'code': 'Test Time Off 8',
+            'requires_allocation': False,
+            'count_days_as': 'calendar',
+            'request_unit': 'half_day',
+        })
+        employee = self.env['hr.employee'].create({
+            'name': 'Test Employee',
+            'resource_calendar_id': self.company.resource_calendar_id.id,
+        })
+        # Saturday
+        leave = self.env['hr.leave'].create({
+            'employee_id': employee.id,
+            'work_entry_type_id': half_day_type.id,
+            'request_date_from': date(2024, 6, 1),
+            'request_date_to': date(2024, 6, 1),
+            'request_date_from_period': 'am',
+            'request_date_to_period': 'am',
+        })
+        self.assertEqual(leave._get_durations()[leave.id], (0.5, 4))
+
     def test_calendar_duration_without_employee(self):
         """Duration of a 'calendar days' leave that has no employee yet
 
